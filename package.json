@@ -1,6 +1,6 @@
 {
-  "homepage": "https://erisetyawan166.github.io/rebuild-krl-schedule",
-  "name": "rebuild-krl-schedule",
+  "homepage": "https://erisetyawan166.github.io/rebuild-penjadwalan-krl",
+  "name": "rebuild-penjadwalan-krl",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
