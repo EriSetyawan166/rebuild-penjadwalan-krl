@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/rebuild-penjadwalan-krl/static/css/main.9f30e5f0.css",
+    "main.js": "/rebuild-penjadwalan-krl/static/js/main.f7efe21e.js",
+    "static/js/453.a27f846b.chunk.js": "/rebuild-penjadwalan-krl/static/js/453.a27f846b.chunk.js",
+    "index.html": "/rebuild-penjadwalan-krl/index.html",
+    "main.9f30e5f0.css.map": "/rebuild-penjadwalan-krl/static/css/main.9f30e5f0.css.map",
+    "main.f7efe21e.js.map": "/rebuild-penjadwalan-krl/static/js/main.f7efe21e.js.map",
+    "453.a27f846b.chunk.js.map": "/rebuild-penjadwalan-krl/static/js/453.a27f846b.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9f30e5f0.css",
+    "static/js/main.f7efe21e.js"
+  ]
+}
