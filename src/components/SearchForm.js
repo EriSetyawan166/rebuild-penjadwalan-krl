@@ -54,10 +54,20 @@ function TimeDropDown({ selectedTime, onChange, isDari = false, selectedTimeDari
     );
 }
 
-function SearchForm({onSubmit}) {
+function SearchForm({ onSubmit }) {
+    const currentHour = new Date().getHours(); 
+    let initialTimeDari = `${currentHour.toString().padStart(2, '0')}:00`;
+    let initialTimeSampai;
+
+    if (currentHour === 23) {
+        initialTimeSampai = '24:00';
+    } else {
+        initialTimeSampai = `${Math.min(currentHour + 2, 24).toString().padStart(2, '0')}:00`;
+    }
+
     const [selectedStations, setSelectedStations] = useState("");
-    const [selectedTimeDari, setSelectedTimeDari] = useState("");
-    const [selectedTimeSampai, setSelectedTimeSampai] = useState("");
+    const [selectedTimeDari, setSelectedTimeDari] = useState(initialTimeDari);
+    const [selectedTimeSampai, setSelectedTimeSampai] = useState(initialTimeSampai);
     const [isValid, setIsValid] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [dataAvailable, setDataAvailable] = useState(true);
