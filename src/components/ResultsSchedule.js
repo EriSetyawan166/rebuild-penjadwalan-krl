@@ -8,7 +8,11 @@ import { Image } from 'react-bootstrap';
 
 function DetailModal({ trainDetail, trainDetailSchedule, show, handleClose }) {
     const marginTopClass = trainDetailSchedule.length > 0 && trainDetailSchedule[0].transit_station ? 'mt-5' : 'mt-3';
+    const currentDate = new Date();
 
+    let currentTimeFormatted = currentDate.getHours() * 60 + currentDate.getMinutes();
+    let isNextScheduleFound = false;
+    
     return (
         <Modal show={show} onHide={handleClose} dialogClassName='modal-detail'>
             <Modal.Header className='d-flex justify-content-center'>
@@ -23,22 +27,50 @@ function DetailModal({ trainDetail, trainDetailSchedule, show, handleClose }) {
                 <h3>{trainDetail.dest}</h3>
                 <p className='text-white m-0 rounded-5 text-center px-5' style={{ backgroundColor: trainDetail.color }}><b>{trainDetail.ka_name}</b></p>
                 <div className={`${marginTopClass} w-100`}>
-                    {trainDetailSchedule.map((schedule, index) => (
+                {trainDetailSchedule.map((schedule, index) => {
+                    const [scheduleHour, scheduleMinute] = schedule.time_est.split(':').map(Number);
+                    const scheduleTime = scheduleHour * 60 + scheduleMinute; 
+                    const shouldHighlight = !isNextScheduleFound && scheduleTime > currentTimeFormatted;
+                    const isSameDestination = schedule.station_name === trainDetail.dest;
+
+                    if (shouldHighlight) {
+                        isNextScheduleFound = true; 
+                    }
+
+                    const backgroundColor = shouldHighlight ? "#35f261" : (isSameDestination ? "red" : "#ccc");
+                    const borderColor = shouldHighlight ? "#35f261" : (isSameDestination ? "red" : "#ccc");
+
+                    return (
                         <div key={index}>
                             <div className='d-flex schedule-container gap-0 align-items-center'>
-                            <div className='station'>
-                                {schedule.transit_station &&
-                                <>
-                                    <img className='img-transit' src="https://commuterline.id/img/transit.png" alt="" />
-                                    <span className="line-between-station"></span>
-                                </>
-                            }
-                            </div>
-                            {schedule.transit_station ? <span className='circle-station'></span> : <span className='circle'></span>}
-                            <span className="line-between"></span>
-                            <p className='container-station-name border border-2 py-3 rounded-5 m-0 text-center'><b>{schedule.station_name}</b></p>
-                            <span className="line-between"></span>
-                            <p className='container-station-name border border-2 py-3 rounded-5 m-0 text-center'><b>{schedule.time_est.split(':').slice(0, 2).join(':')}</b></p>
+                                <div className='station'>
+                                    {schedule.transit_station &&
+                                        <>
+                                            <img className='img-transit' src="https://commuterline.id/img/transit.png" alt="" />
+                                            <span className="line-between-station" ></span>
+                                        </>
+                                    }   
+                                </div>
+                                {schedule.transit_station ? <span className='circle-station' style={{ backgroundColor  }}></span> : <span className='circle' style={{ backgroundColor  }}></span>}
+                                <span className="line-between" style={{ backgroundColor  }}></span>
+                                <p className='container-station-name py-3 rounded-5 m-0 text-center'
+                                    style={{
+                                        border: '2px solid',
+                                        borderColor,
+                                        padding: '10px'
+                                    }}>
+                                    <b>{schedule.station_name}</b>
+                                </p>
+                                <span className="line-between" 
+                                    style={{ backgroundColor  }}></span>
+                                <p className='container-station-name py-3 rounded-5 m-0 text-center'
+                                    style={{
+                                        border: '2px solid',
+                                        borderColor,
+                                        padding: '10px'
+                                    }}>
+                                    <b>{schedule.time_est.split(':').slice(0, 2).join(':')}</b>
+                                </p>
                             </div>
                             {schedule.transit_station && <>
                                 <div className='station img-train-vector-container-parent d-flex gap-2 justify-content-start'>
@@ -50,19 +82,20 @@ function DetailModal({ trainDetail, trainDetailSchedule, show, handleClose }) {
                                 </div>
                             </>}
                             <div className='station-responsive'>
-                            {schedule.transit_station &&
-                                <>
-                                    <img className='img-transit my-3' src="https://commuterline.id/img/transit.png" alt="" />
-                                    {schedule.transit.map((station, index) => (
-                                    <div key={index} className='img-train-vector-container' style={{ backgroundColor: station }}>
-                                        <img className='img-train-vector align-items-center' src="https://commuterline.id/img/vector-krl.png" alt="" />
-                                    </div>
-                                    ))}
-                                </>
-                            }
+                                {schedule.transit_station &&
+                                    <>
+                                        <img className='img-transit my-3' src="https://commuterline.id/img/transit.png" alt="" />
+                                        {schedule.transit.map((station, index) => (
+                                        <div key={index} className='img-train-vector-container' style={{ backgroundColor: station }}>
+                                            <img className='img-train-vector align-items-center' src="https://commuterline.id/img/vector-krl.png" alt="" />
+                                        </div>
+                                        ))}
+                                    </>
+                                }
                             </div>
                         </div>
-                    ))}
+                        );
+                    })}
                 </div>
             </Modal.Body>
         </Modal>
@@ -99,7 +132,7 @@ function ResultsSchedule({ schedules }) {
                         <div className='card-result-detail d-flex align-items-center justify-content-between'>
                             <div className='LocationContainer text-center flex-grow-1'>
                                 <p className='m-0'><b>{schedule.dest}</b></p> 
-                                <p className='text-white m-0 rounded-5' style={{ backgroundColor: schedule.color }}><b>{schedule.ka_name}</b></p>
+                                <p className='commuter-text text-white m-0 rounded-5 py-1' style={{ backgroundColor: schedule.color }}><b>{schedule.ka_name}</b></p>
                             </div>
                             <p className='m-0'>
                                 <b>{schedule.time_est.split(':').slice(0, 2).join(':')}</b>
