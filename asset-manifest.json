@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/rebuild-penjadwalan-krl/static/css/main.9f30e5f0.css",
-    "main.js": "/rebuild-penjadwalan-krl/static/js/main.a96b658a.js",
+    "main.css": "/rebuild-penjadwalan-krl/static/css/main.81adf376.css",
+    "main.js": "/rebuild-penjadwalan-krl/static/js/main.0fa9eee9.js",
     "static/js/453.a27f846b.chunk.js": "/rebuild-penjadwalan-krl/static/js/453.a27f846b.chunk.js",
     "index.html": "/rebuild-penjadwalan-krl/index.html",
-    "main.9f30e5f0.css.map": "/rebuild-penjadwalan-krl/static/css/main.9f30e5f0.css.map",
-    "main.a96b658a.js.map": "/rebuild-penjadwalan-krl/static/js/main.a96b658a.js.map",
+    "main.81adf376.css.map": "/rebuild-penjadwalan-krl/static/css/main.81adf376.css.map",
+    "main.0fa9eee9.js.map": "/rebuild-penjadwalan-krl/static/js/main.0fa9eee9.js.map",
     "453.a27f846b.chunk.js.map": "/rebuild-penjadwalan-krl/static/js/453.a27f846b.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.9f30e5f0.css",
-    "static/js/main.a96b658a.js"
+    "static/css/main.81adf376.css",
+    "static/js/main.0fa9eee9.js"
   ]
 }
