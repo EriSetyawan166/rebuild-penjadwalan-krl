@@ -280,5 +280,9 @@ body {
     .LocationContainer .commuter-text {
         font-size: 0.65em;
     }
+
+    .container-station-name {
+        font-size: 0.7em;
+    }
 }
 
