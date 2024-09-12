@@ -7,28 +7,66 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Spinner } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
+import Select from 'react-select';
 
 function SelectStation({selectedStations, onChange}) {
     const [stations, setStations] = useState([]);
 
     useEffect(() => {
+        const controller = new AbortController();
+        const signal = controller.signal;
+    
         const loadStations = async () => {
-            const stationData = await fetchAllStationNames();
-            setStations(stationData)
+            try {
+                const stationData = await fetchAllStationNames(signal);
+                setStations(stationData.map(station => ({
+                    value: station.id,
+                    label: station.name,
+                    isDisabled: station.fgEnable === 0
+                })));
+            } catch (e) {
+                if (e.name === 'AbortError') {
+                    console.log('Fetch aborted');
+                } else {
+                    console.error('Fetch error:', e);
+                }
+            }
         };
-
+    
         loadStations();
+        return () => {
+            controller.abort();
+        };
     }, []);
+
+    const customStyles = {
+        control: (base, state) => ({
+            ...base,
+            border: 0, 
+            paddingTop: '8px', 
+            paddingBottom: '8px',
+            paddingLeft: '10px',
+            paddingRight: '10px',
+            boxShadow: state.isFocused ? '0 0 0 1px rgba(0, 0, 0, 0.1)' : 0, 
+            borderRadius: '50px', 
+            '&:hover': {
+                boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.1)' 
+            }
+        })
+    };
 
     return (
         <>
-            <Form.Select className='custom-select rounded-5 p-3' value={selectedStations} onChange={onChange}>
-                <option value="" className='p-2'>Dari Stasiun Mana?</option>
-                    {stations.map((station, index) => (
-                        <option key={index} value={station.id} disabled={station.fgEnable === 0}>  {station.fgEnable ? station.name : "----------" + station.name + "----------"}</option>
-                ))}
-            </Form.Select>
-                
+            <Select
+                    value={stations.find(station => station.value === selectedStations)}
+                    onChange={onChange}
+                    options={stations}
+                    isDisabled={stations.length === 0}
+                    placeholder="Dari Stasiun Mana?"
+                noOptionsMessage={() => "Tidak ada stasiun yang tersedia"}
+                styles={customStyles}
+
+                />      
         </>
     );
 }
@@ -72,18 +110,29 @@ function SearchForm({ onSubmit }) {
     const [isLoading, setIsLoading] = useState(false);
     const [dataAvailable, setDataAvailable] = useState(true);
     const [showModal, setShowModal] = useState(false);
-
-    function handleSelectStationChange(event){
-        setSelectedStations(event.target.value);
+    
+    const handleSelectStationChange = (selectedOption) => {
+        console.log(selectedOption);
+        if (selectedOption) {
+            setSelectedStations(selectedOption.value);
+            checkValidity(selectedOption.value, selectedTimeDari, selectedTimeSampai);
+        } else {
+            setSelectedStations("");
+            checkValidity("", selectedTimeDari, selectedTimeSampai);
+        }
+    };
+    
+    const handleSelectTimeDariChange = (event) => {
+        const value = event.target.value;
+        setSelectedTimeDari(value);
+        checkValidity(selectedStations, value, selectedTimeSampai);
     };
 
-    function handleSelectTimeDariChange(event) {
-        setSelectedTimeDari(event.target.value);
-    }
-
-    function handleSelectTimeSampaiChange(event) {
-        setSelectedTimeSampai(event.target.value);
-    }
+    const handleSelectTimeSampaiChange = (event) => {
+        const value = event.target.value;
+        setSelectedTimeSampai(value);
+        checkValidity(selectedStations, selectedTimeDari, value);
+    };
 
     function handleSubmitButton(event) {
         event.preventDefault();
@@ -104,15 +153,11 @@ function SearchForm({ onSubmit }) {
         .finally(() => {
             setIsLoading(false);
         });
-    }
+    };
 
-    useEffect(() => {
-        if (selectedStations && selectedTimeDari && selectedTimeSampai) {
-            setIsValid(true);
-        } else {
-            setIsValid(false);
-        }
-    }, [selectedStations, selectedTimeDari, selectedTimeSampai]);
+    const checkValidity = (stations, timeDari, timeSampai) => {
+        setIsValid(stations && timeDari && timeSampai);
+    };
 
     useEffect(() => {
         if (!isLoading && !dataAvailable) {
@@ -120,8 +165,6 @@ function SearchForm({ onSubmit }) {
         }
     }, [isLoading, dataAvailable]);
     
-    
-
     return (
         <div className='SearchContainer'>
             <form onSubmit={handleSubmitButton}>
