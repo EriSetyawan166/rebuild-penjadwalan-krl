@@ -112,7 +112,6 @@ function SearchForm({ onSubmit }) {
     const [showModal, setShowModal] = useState(false);
     
     const handleSelectStationChange = (selectedOption) => {
-        console.log(selectedOption);
         if (selectedOption) {
             setSelectedStations(selectedOption.value);
             checkValidity(selectedOption.value, selectedTimeDari, selectedTimeSampai);

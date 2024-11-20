@@ -10,7 +10,6 @@ function DetailModal({ trainDetail, trainDetailSchedule, show, handleClose }) {
     const marginTopClass = trainDetailSchedule.length > 0 && trainDetailSchedule[0].transit_station ? 'mt-5' : 'mt-3';
     const currentDate = new Date();
 
-    console.log("TraindetailSchedule", trainDetailSchedule);
     let currentTimeFormatted = currentDate.getHours() * 60 + currentDate.getMinutes();
     let isNextScheduleFound = false;
     
