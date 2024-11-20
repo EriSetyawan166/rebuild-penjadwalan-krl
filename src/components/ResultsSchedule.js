@@ -10,6 +10,7 @@ function DetailModal({ trainDetail, trainDetailSchedule, show, handleClose }) {
     const marginTopClass = trainDetailSchedule.length > 0 && trainDetailSchedule[0].transit_station ? 'mt-5' : 'mt-3';
     const currentDate = new Date();
 
+    console.log("TraindetailSchedule", trainDetailSchedule);
     let currentTimeFormatted = currentDate.getHours() * 60 + currentDate.getMinutes();
     let isNextScheduleFound = false;
     
@@ -74,7 +75,7 @@ function DetailModal({ trainDetail, trainDetailSchedule, show, handleClose }) {
                             </div>
                             {schedule.transit_station && <>
                                 <div className='station img-train-vector-container-parent d-flex gap-2 justify-content-start'>
-                                {schedule.transit.map((station, index) => (
+                                {Array.isArray(schedule.transit) && schedule.transit.map((station, index) =>(
                                     <div key={index} className='img-train-vector-container' style={{ backgroundColor: station }}>
                                         <img className='img-train-vector align-items-center' src="https://commuterline.id/img/vector-krl.png" alt="" />
                                     </div>
@@ -85,7 +86,7 @@ function DetailModal({ trainDetail, trainDetailSchedule, show, handleClose }) {
                                 {schedule.transit_station &&
                                     <>
                                         <img className='img-transit my-3' src="https://commuterline.id/img/transit.png" alt="" />
-                                        {schedule.transit.map((station, index) => (
+                                        {Array.isArray(schedule.transit) && schedule.transit.map((station, index) =>(
                                         <div key={index} className='img-train-vector-container' style={{ backgroundColor: station }}>
                                             <img className='img-train-vector align-items-center' src="https://commuterline.id/img/vector-krl.png" alt="" />
                                         </div>
