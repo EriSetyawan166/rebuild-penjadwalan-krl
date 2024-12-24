@@ -1,5 +1,5 @@
 export async function fetchSchedule(stationId, timeFrom, timeTo){
-    const url = `https://api-partner.krl.co.id/krlweb/v1/schedule?stationid=${stationId}&timefrom=${timeFrom}&timeto=${timeTo}`;
+    const url = `https://api-partner.krl.co.id/krl-webs/v1/schedule?stationid=${stationId}&timefrom=${timeFrom}&timeto=${timeTo}`;
     const bearerToken = process.env.REACT_APP_BEARER_TOKEN;
 
     try {

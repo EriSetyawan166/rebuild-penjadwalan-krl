@@ -1,5 +1,5 @@
 export async function fetchAllStationNames() {
-    const url = 'https://api-partner.krl.co.id/krlweb/v1/krl-station';
+    const url = 'https://api-partner.krl.co.id/krl-webs/v1/krl-station';
     const bearerToken = process.env.REACT_APP_BEARER_TOKEN;
 
     try {
