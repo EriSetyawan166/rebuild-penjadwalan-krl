@@ -1,5 +1,5 @@
 export async function fetchTrainDetailSchedule(trainId) {
-    const url = `https://api-partner.krl.co.id/krlweb/v1/schedule-train?trainid=${trainId}`
+    const url = `https://api-partner.krl.co.id/krl-webs/v1/schedule-train?trainid=${trainId}`
     const bearerToken = process.env.REACT_APP_BEARER_TOKEN;
 
     try {
